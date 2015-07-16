@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2015 by tooto1985 (http://jsbin.com/necuqu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="jQuery手指滑動選單">
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+#outbox {
+	height:500px;
+	width:300px;
+	border:1px solid black;
+	overflow:hidden;
+}
+
+#inbox {
+	width:100%;
+	position:relative;
+	background-color:pink;
+	top:0;
+}
+
+.item {
+	height:50px;
+	line-height:50px;
+}
+</style>
+</head>
+<body>
+  <div id="outbox">
+    <div id="inbox">
+	  <div class="item">1</div>
+	  <div class="item">2</div>
+	  <div class="item">3</div>
+	  <div class="item">4</div>
+	  <div class="item">5</div>
+	  <div class="item">6</div>
+	  <div class="item">7</div>
+	  <div class="item">8</div>
+	  <div class="item">9</div>
+	  <div class="item">10</div>
+	  <div class="item">11</div>
+	  <div class="item">12</div>
+	  <div class="item">13</div>
+	  <div class="item">14</div>
+	  <div class="item">15</div>
+	  <div class="item">16</div>
+    </div>
+  </div>
+<script id="jsbin-javascript">
+$(function() {
+
+    var $outbox = $("#outbox"),
+        $inbox = $("#inbox");
+
+    (function($outbox,$inbox) {
+        var isMove = null;
+        $outbox.on("touchstart mousedown",function(e) {
+            isMove = {
+                y: e.type=== "mousedown" ? e.screenY : e.originalEvent.touches[0].screenY
+            };
+
+        });
+        $outbox.add(window).on("touchmove mousemove",function(e) {
+            var addY;
+				
+            if (isMove) {
+                addY = (e.type=== "mousemove" ? e.screenY : e.originalEvent.touches[0].screenY) - isMove.y;
+                if (!isMove.top) {
+                    isMove.top = parseInt($inbox.css("top"), 10);
+                }
+                $inbox.css("top", isMove.top + addY);
+				e.preventDefault();
+				
+            }
+        });
+        $outbox.add(window).on("touchend mouseup",function(e) {
+			var top = parseInt($inbox.css("top"), 10);
+			if (top > 0) {
+				$inbox.stop().animate({"top":0},200);
+			} else if (top < -($inbox.height()) + $outbox.height()) {
+				$inbox.stop().animate({"top":-($inbox.height()) + $outbox.height()},200);
+			}
+            isMove = null;
+        });
+    })($outbox,$inbox);
+
+
+
+
+
+});
+</script>
+</body>
+</html>

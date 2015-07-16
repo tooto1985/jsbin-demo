@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2015 by tooto1985 (http://jsbin.com/yogudi/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="React第一個範例">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/JSXTransformer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react-with-addons.js"></script>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+li {
+	cursor:pointer;
+}
+</style>
+</head>
+<body>
+	
+	<div id="container"></div>
+
+<script id="jsbin-javascript" type="text/jsx">
+var TextBox = React.createClass({
+  getInitialState: function() {
+    return {text:""};
+  },
+  change: function(e) {
+    this.setState({text:e.target.value});
+  },
+  submit: function(e) {
+    if(this.props.onClick){
+	  this.props.onClick(this.state.text);
+	  this.setState({text:""});
+	}
+	e.preventDefault();
+  },
+  render: function() {
+    return(
+	  <form onSubmit={this.submit}>
+	    <input type="text" value={this.state.text}  onChange={this.change}  />
+	    <input type="submit" value="Add" onClick={this.submit} />
+	  </form>
+	);
+  }
+});
+
+var ItemList = React.createClass({
+  render: function() {
+    var key=this.props.key;
+    var name=this.props.name;
+    return(
+	  <li key={key} onClick={this.props.onClick}>{name}</li>
+	);
+  }
+});
+
+var ItemBox = React.createClass({
+  getInitialState: function() {
+    return {data:["mark","john","tom"]};
+  },
+  render: function() {
+    var i=0;
+    var list = this.state.data.map(function(a) {
+	  return(
+	    <ItemList key={i++} name={a} onClick={this.remove.bind(this,a)} />
+	  );
+	},this);
+    
+    return(
+	  <div>
+	    <TextBox onClick={this.add} value={this.state.text} />
+        <ul>{list}</ul>
+	  </div>
+	);
+  },
+  remove: function(name) {
+    var index = this.state.data.indexOf(name);
+	this.state.data.splice(index,1);
+    this.setState(this.state);
+  },
+  add: function(name) {
+    this.state.data.push(name);
+    this.setState(this.state);
+  }
+});
+
+React.render(
+  <ItemBox />,
+  document.getElementById("container")
+);
+</script>
+</body>
+</html>

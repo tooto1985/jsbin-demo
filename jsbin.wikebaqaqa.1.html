@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2016 by anonymous (http://jsbin.com/wikebaqaqa/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+div {
+  
+  position:absolute;
+
+}
+
+#div1 {
+  width:100px;
+  height:100px;
+  border:1px solid;
+  background-color:red;
+  top:100px;
+  left:100px;
+}
+
+#div2 {
+  width:50px;
+  height:50px;
+  border:1px solid;
+  background-color:green;
+}
+
+#div3 {
+  width:75px;
+  height:75px;
+  border:1px solid;
+  background-color:blue;
+  top:300px;
+  left:200px
+}
+</style>
+</head>
+<body>
+  <div id="div1"></div>
+  <div id="div2"></div>
+  <div id="div3"></div>
+<script id="jsbin-javascript">
+(function($) {
+  var key="xy",
+      $window=$(window);
+  $.fn.drop = function() {
+    this.each(function() {
+      var $this = $(this);
+      $this.mousedown(function(e) {
+        $this.data(key,[
+          e.pageX-$this.offset().left,
+          e.pageY-$this.offset().top
+        ]);
+      });  
+      $(document).mousemove(function(e) {
+        if ($this.data(key)) {
+          var left=e.pageX-$this.data(key)[0],
+              top=e.pageY-$this.data(key)[1];
+          if(left<0) {
+            left=0;
+          } else if(left>$window.width()-$this.outerWidth(true)) {
+            left=$window.width()-$this.outerWidth(true);
+          }
+          if(top<0) {
+            top=0;
+          } else if(top>$window.height()-$this.outerHeight(true)){
+            top=$window.height()-$this.outerHeight(true);
+          }
+          $this.css({
+            left:left,
+            top:top
+          });
+        }
+      }).mouseup(function() {
+        $this.data(key,null);
+      });  
+    });
+  }; 
+})(jQuery);
+$(function() {
+  $("div").drop();
+});
+</script>
+</body>
+</html>

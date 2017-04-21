@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by anonymous (http://jsbin.com/mepoyomeji/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+
+	<input type="text" id="d1">
+	<input type="text" id="d2">
+	<input type="text" id="d3">
+	<input type="text" id="d4">
+<script id="jsbin-javascript">
+bundle(document.getElementById("d1"),window,"input");
+bundle(document.getElementById("d2"),window,"input");
+bundle(document.getElementById("d3"),window,"input");
+bundle(document.getElementById("d4"),window,"input");
+
+
+
+function bundle(dom, obj, prop) {
+  (function() {
+	window.data = window.data || [];
+    window.data.push(dom);
+	var setting = {
+      get: function() {
+        return dom.value;
+      },
+      set: function(value) {
+        for(var a in window.data) {
+			window.data[a].value=value;
+		}
+      },
+	  configurable:true
+	}
+    Object.defineProperty(obj, prop, setting);
+    dom.addEventListener("keydown", function(e) {
+	  if(!e.shiftKey && !(e.keyCode >=37 && e.keyCode <=39)) {
+		var that = this;
+		setTimeout(function() {
+		  obj[prop] = that.value;
+		},0);
+	  }
+	}, false);
+  })();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by anonymous (http://jsbin.com/kevecuwapi/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+
+<script id="jsbin-javascript">
+var OB = OB || {
+  createNS: function(namespace, callback) {
+    var names = namespace.split(".");
+    var current = this;
+    for(var i=0,max=names.length;i<max;i++) {
+      if(typeof current[names[i]] === "undefined") {
+        current[names[i]] = {};
+      }
+      if (i !== max-1) {
+        current = current[names[i]];
+      } else {
+        current[names[max-1]] = callback;
+      }
+    }
+  }
+};
+OB.createNS("model", function() {
+  alert("message");
+});
+OB.createNS("model.products", function() {
+  alert("ok");
+});
+OB.createNS("model.products.data", 5);
+
+
+
+
+
+</script>
+</body>
+</html>
